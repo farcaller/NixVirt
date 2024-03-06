@@ -18,7 +18,12 @@ let
         (subelem "os" [ ]
           [
             (elem "type" [ (subattr "arch" typeString) (subattr "machine" typeString) ] (sub "type" typeString))
-            (subelem "loader" [ (subattr "readonly" typeBoolYesNo) (subattr "type" typeString) ] (sub "path" typePath))
+            (subelem "loader" [
+              (subattr "readonly" typeBoolYesNo)
+              (subattr "secure" typeBoolYesNo)
+              (subattr "type" typeString)
+            ]
+              (sub "path" typePath))
             (subelem "nvram"
               [
                 (subattr "template" typePath)
@@ -63,6 +68,16 @@ let
                 (subelem "ipi" [ (subattr "state" typeBoolOnOff) ] [ ])
                 (subelem "evmcs" [ (subattr "state" typeBoolOnOff) ] [ ])
               ])
+            (subelem "kvm" [ ] [
+              (subelem "hidden" [ (subattr "state" typeBoolOnOff) ] [ ])
+              (subelem "hint-dedicated" [ (subattr "state" typeBoolOnOff) ] [ ])
+              (subelem "poll-control" [ (subattr "state" typeBoolOnOff) ] [ ])
+              (subelem "pv-ipi" [ (subattr "state" typeBoolOnOff) ] [ ])
+              (subelem "dirty-ring" [ (subattr "state" typeBoolOnOff) ] [ ])
+            ])
+            (subelem "smm" [ (subattr "state" typeBoolOnOff) ] [
+              (subelem "tseg" [ (subattr "unit" typeString) ] (sub "count" typeInt))
+            ])
             (subelem "vmport" [ (subattr "state" typeBoolOnOff) ] [ ])
           ]
         )
@@ -155,7 +170,11 @@ let
                       (subattr "discard" typeString)
                     ] [ ]
                   )
-                  (subelem "source" [ (subattr "file" typePath) (subattr "startupPolicy" typeString) ] [ ])
+                  (subelem "source" [
+                    (subattr "dev" typePath)
+                    (subattr "file" typePath)
+                    (subattr "startupPolicy" typeString)
+                  ] [ ])
                   targetelem
                   (subelem "readonly" [ ] [ ])
                   addresselem
